@@ -1,6 +1,7 @@
 files= [expand("fastq/{fastq}_R1_fastqc.html",fastq=config["fastq"]),
         expand("trimmed_{fastq}_R1.fastq.gz",fastq=config["fastq"]),
-        expand("bam/{fastq}_Aligned.sortedByCoord.out.bam",fastq=config["fastq"])]
+        expand("bam/{fastq}_Aligned.sortedByCoord.out.bam",fastq=config["fastq"]),
+        "counts_out.txt"]
 
 rule Done:
     input: files
@@ -32,7 +33,7 @@ rule Trim_adapters:
         fastp -i {input.fastq1} -I {input.fastq2} -o {output.trimmed_fastq_R1} -O {output.trimmed_fastq_R2} -h trimmed_fastq/{wildcards.fastq}_fastp.html -j trimmed_fastq/{wildcards.fastq}_fastp.json
         """
     
-    
+
 rule Alignment:
     input:
         trimmed_fastq_R1= "trimmed_{fastq}_R1.fastq.gz",
@@ -48,4 +49,17 @@ rule Alignment:
         --readFilesCommand zcat \
         --outSAMtype BAM SortedByCoordinate \
         --outFileNamePrefix bam/{wildcards.fastq}_
+        """
+
+rule Quantification:
+    input: 
+        bam_files= expand("bam/{fastq}_Aligned.sortedByCoord.out.bam",fastq=config["fastq"])
+    output:
+        counts="counts_out.txt"
+    conda: "envs/rnaseq.yaml"
+    shell:
+        """
+        featureCounts -a /proj/edith/regeps/regep00/studies/COPDGene/analyses/rechp/RNAseq/Homo_sapiens.GRCh38.106.gtf\
+        -o {output.counts} \
+         {input.bam_files}
         """
