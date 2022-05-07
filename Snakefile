@@ -1,6 +1,4 @@
-files= [expand("rawfastqc/{fastq}_R1_fastqc.html",fastq=config["fastq"]),
-        expand("bam/{fastq}_Aligned.sortedByCoord.out.bam",fastq=config["fastq"]),
-        "cleaned_counts.txt",
+files= ["cleaned_counts.txt",
         "multiqc_report.html"]
 
 rule Done:
@@ -30,6 +28,8 @@ rule fastqc:
 
 rule Trim_adapters:
     input:
+        fastqc_1= "rawfastqc/{fastq}_R1_fastqc.html",
+        fastqc_2= "rawfastqc/{fastq}_R2_fastqc.html",
         fastq1 = lambda wildcards: config["raw_fastq"]+"{fastq}"+config["left_suffix"],
         fastq2 = lambda wildcards: config["raw_fastq"]+"{fastq}"+config["right_suffix"]
 
