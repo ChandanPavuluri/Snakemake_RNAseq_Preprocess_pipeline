@@ -1,7 +1,8 @@
 files= [expand("fastq/{fastq}_R1_fastqc.html",fastq=config["fastq"]),
         expand("trimmed_{fastq}_R1.fastq.gz",fastq=config["fastq"]),
         expand("bam/{fastq}_Aligned.sortedByCoord.out.bam",fastq=config["fastq"]),
-        "counts_out.txt"]
+        "counts_out.txt",
+        "multiqc_report.html"]
 
 rule Done:
     input: files
@@ -62,4 +63,19 @@ rule Quantification:
         featureCounts -a /proj/edith/regeps/regep00/studies/COPDGene/analyses/rechp/RNAseq/Homo_sapiens.GRCh38.106.gtf\
         -o {output.counts} \
          {input.bam_files}
+        """
+
+rule Quality_control:
+    input:
+        cleaned="counts_out.txt"
+    output:
+        report= "multiqc_report.html"
+    params:
+        fastqc_dir= srcdir("fastq"),
+        bam_dir= srcdir("bam")
+    conda: "envs/rnaseq.yaml"
+    shell:
+        """
+        multiqc \
+            --dirs {params.fastqc_dir} {params.bam_dir} ./
         """
