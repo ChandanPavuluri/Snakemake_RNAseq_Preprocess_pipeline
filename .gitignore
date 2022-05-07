@@ -1,0 +1,9 @@
+fastq
+bam
+featurecounts
+multiqc_data
+rawfastqc
+trimmed_fastq
+logs
+.snakemake
+
