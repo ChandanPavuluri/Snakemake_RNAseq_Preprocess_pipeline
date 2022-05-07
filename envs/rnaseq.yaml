@@ -7,3 +7,4 @@ dependencies:
   - fastqc
   - fastp
   - star
+  - subread
