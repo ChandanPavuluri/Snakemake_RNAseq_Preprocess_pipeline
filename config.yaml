@@ -1,1 +1,6 @@
+raw_fastq: "/d/tmp/rechp/snakemakernaseq/fastq/"
+left_suffix: "_R1.fastq.gz"
+right_suffix: "_R2.fastq.gz"
 fastq: ["SR1A","SR1B"]
+genome_dir: "/proj/edith/regeps/regep00/studies/COPDGene/analyses/rechp/RNAseq/GRCh38_STAR/"
+GTF: "/proj/edith/regeps/regep00/studies/COPDGene/analyses/rechp/RNAseq/Homo_sapiens.GRCh38.106.gtf"
