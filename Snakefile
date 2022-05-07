@@ -1,6 +1,6 @@
 files= [expand("fastq/{fastq}_R1_fastqc.html",fastq=config["fastq"]),
         expand("bam/{fastq}_Aligned.sortedByCoord.out.bam",fastq=config["fastq"]),
-        "counts_out.txt",
+        "cleaned_counts.txt",
         "multiqc_report.html"]
 
 rule Done:
@@ -63,6 +63,24 @@ rule Quantification:
         -o {output.counts} \
          {input.bam_files}
         """
+
+rule Clean_counts_table:
+    input:
+        counts="counts_out.txt"
+    output:
+        cleaned_counts= "cleaned_counts.txt"
+    shell:
+        """
+        # removing 2nd column to 6th column
+        awk '{{$2=$3=$4=$5=$6=""; print $0}}' {input.counts} > {output.cleaned_counts}
+        # removing the first line
+        sed -i '1d' {output.cleaned_counts}
+        # replacing the alignedbam in column name
+        sed -i 's/_Aligned.sortedByCoord.out.bam//g' {output.cleaned_counts}
+        # replacing bam/ in the column name
+        sed -i 's+bam/++g' {output.cleaned_counts}
+        """
+
 
 rule Quality_control:
     input:
