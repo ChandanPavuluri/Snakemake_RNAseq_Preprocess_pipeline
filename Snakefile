@@ -1,5 +1,4 @@
 files= [expand("fastq/{fastq}_R1_fastqc.html",fastq=config["fastq"]),
-        expand("trimmed_{fastq}_R1.fastq.gz",fastq=config["fastq"]),
         expand("bam/{fastq}_Aligned.sortedByCoord.out.bam",fastq=config["fastq"]),
         "counts_out.txt",
         "multiqc_report.html"]
