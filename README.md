@@ -8,3 +8,15 @@ This workflow can be implemented easily just by cloning the repository and makin
 
 
 ![rulegraph](https://user-images.githubusercontent.com/77353407/167415070-e265c78d-3e4b-4b90-b0d5-e8ba12a98589.png)
+
+Tools:
+
+fatsqc: [fastqc](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)
+
+Trim_adapters: [fastp](https://github.com/OpenGene/fastp)
+
+Alignment: [STAR](https://github.com/alexdobin/STAR)
+
+Quantification: [Subread/featureCounts](http://subread.sourceforge.net/)
+
+Quality_control: [MultiQC](https://multiqc.info/)
